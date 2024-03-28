@@ -1,4 +1,4 @@
-import csv
+import csv, os
 import logging
 from balance_manager.models import Agency, Consumer, Balance
 from django import conf
@@ -53,3 +53,5 @@ class IngestionService:
             next(csv_reader, None)
             for row in csv_reader:
                 self.save_to_database(row)
+
+        os.remove(local_filename)
