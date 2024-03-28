@@ -6,3 +6,4 @@ boto3~=1.34.71
 django-environ
 botocore~=1.34.71
 environ
+gunicorn
