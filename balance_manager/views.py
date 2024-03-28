@@ -2,14 +2,17 @@ from django.shortcuts import get_object_or_404
 
 from balance_manager.models import Consumer
 from balance_manager.serializers import ConsumerSerializer
+from balance_manager.pagination import CustomConsumerPagination
 
 from rest_framework import viewsets
 from rest_framework.response import Response
 
 
-class ConsumerViewSet(viewsets.ViewSet):
+class ConsumerViewSet(viewsets.ModelViewSet):
+    pagination_class = CustomConsumerPagination
+    serializer_class = ConsumerSerializer
 
-    def list(self, request) -> Response:
+    def list(self, request, **kwargs) -> Response:
         queryset = Consumer.objects.all()
 
         min_balance = request.query_params.get('min_balance')
@@ -28,10 +31,16 @@ class ConsumerViewSet(viewsets.ViewSet):
         if status is not None:
             queryset = queryset.filter(balances__status=status.upper())
 
-        serializer = ConsumerSerializer(queryset.distinct(), many=True)
+        page = self.paginate_queryset(queryset.distinct())
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+
         return Response(serializer.data)
 
-    def retrieve(self, request, pk=None):
+    def retrieve(self, request, pk=None, **kwargs):
         queryset = Consumer.objects.all()
         consumer = get_object_or_404(queryset, pk=pk)
         serializer = ConsumerSerializer(consumer)
