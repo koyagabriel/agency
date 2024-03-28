@@ -44,7 +44,7 @@ with the application. This document is the official reference for that functiona
 1. Get a list of comsumers:
    Input:
     ```cmd
-    curl -i -X GET  http://localhost:8000/consumers
+    curl -i -X GET  https://agency-afa7fdea0e2a.herokuapp.com/consumers
     ```
    Output:
     ```
@@ -82,6 +82,14 @@ with the application. This document is the official reference for that functiona
         }
     }
     ```
+
+### Heroku Endpoint
+
+https://agency-afa7fdea0e2a.herokuapp.com
+
+### Video Endpoint
+
+https://drive.google.com/file/d/1eMuFoHhJoFfiHQE6CwUNi88H4kCleWZV/view?usp=sharing
 
 ### Running Tests
 
